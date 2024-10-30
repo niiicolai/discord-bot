@@ -1,3 +1,6 @@
+import fs from 'fs';
+import path from 'path';
+import { pathToFileURL } from 'url';
 
 /**
  * @class Command
@@ -32,5 +35,34 @@ export default class Command {
      */
     async execute(interaction) {
         await interaction.reply('Method not implemented.');
+    }
+
+    /**
+     * @static
+     * @function all
+     * @description Returns all the commands.
+     * @returns {Promise<Command[]>}
+     */
+    static async all() {
+        const commands = [];
+        const dir = path.resolve('src', 'commands');
+        const files = await fs.promises.readdir(dir);
+        const filePaths = files
+            .filter(file => file.endsWith('.js'))
+            .filter(file => file !== '_command.js')
+            .map(file => {
+                return pathToFileURL(path.join(dir, file));
+            });
+        
+        for (const filePath of filePaths) {
+            try {
+                const command = (await import(filePath.href)).default;
+                commands.push(new command());
+            } catch (error) {
+                console.error(error);
+            }
+        }
+
+        return commands;
     }
 }

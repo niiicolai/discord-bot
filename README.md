@@ -74,24 +74,7 @@ export default class WhoIs extends Command {
 }
 ```
 
-4. **Register the command**
-
-To register the command, you must import the command class and add it to the `commands` array in the [src/commands/_index.js](src/commands/_index.js) file. The command will be automatically registered with the bot when it starts.
-
-See the example below:
-```javascript
-import LatestYouTubeVideo from './latestYouTubeVideo.js'; // Some other command
-// Import the new command
-import WhoIs from './whoIs.js';
-
-export const commands = [    
-    new LatestYouTubeVideo(), // An instance of the other command
-    // Create an instance of the new command
-    new WhoIs(),
-];
-```
-
-5. **Test the command**
+4. **Test the command**
 
 You can now test the command by running the bot and entering the command on Discord.
 Note: You may need to restart the bot if it is already running to register the new command.

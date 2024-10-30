@@ -1,5 +1,5 @@
 import { Client, GatewayIntentBits, REST, Routes } from 'discord.js';
-import { commands } from './commands/_index.js';
+import Command from './commands/_command.js';
 
 const { DISCORD_TOKEN, DISCORD_CLIENT_ID } = process.env;
 if (!DISCORD_TOKEN) console.error('Missing TOKEN in .env');
@@ -14,6 +14,7 @@ if (!DISCORD_CLIENT_ID) console.error('Missing CLIENT_ID in .env');
 async function registerCommands() {
     try {
         console.log('Started refreshing application (/) commands.');
+        const commands = await Command.all();
         const body = commands.map(command => command.details());
         const rest = new REST({ version: '10' }).setToken(DISCORD_TOKEN);
         await rest.put(Routes.applicationCommands(DISCORD_CLIENT_ID), { body });
@@ -30,8 +31,9 @@ async function registerCommands() {
  * @async
  */
 async function login() {
+    const commands = await Command.all();
     const client = new Client({ intents: [ GatewayIntentBits.Guilds ] });
-
+    
     client.on('ready', () => console.log(`Logged in as ${client.user.tag}!`));
     client.on('interactionCreate', async interaction => {
         if (!interaction.isChatInputCommand()) return;
