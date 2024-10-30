@@ -1,33 +1,57 @@
-import { Client, GatewayIntentBits } from 'discord.js';
-import { getData } from './youtube.js';
+import { Client, GatewayIntentBits, REST, Routes } from 'discord.js';
 
-const client = new Client({ intents: [
-    GatewayIntentBits.Guilds,
-] });
+import WhoIs from './commands/whois.js';
+import LatestYouTubeVideo from './commands/latestYouTubeVideo.js';
 
-const { DISCORD_TOKEN } = process.env;
+const { DISCORD_TOKEN, DISCORD_CLIENT_ID } = process.env;
 if (!DISCORD_TOKEN) console.error('Missing TOKEN in .env');
+if (!DISCORD_CLIENT_ID) console.error('Missing CLIENT_ID in .env');
 
-client.on('ready', () => {
-  console.log(`Logged in as ${client.user.tag}!`);
-});
+const commands = [
+    new WhoIs(),
+    new LatestYouTubeVideo()
+];
 
-client.on('interactionCreate', async interaction => {
-  if (!interaction.isChatInputCommand()) return;
-
-  if (interaction.commandName === 'whoiselwood') {
-    await interaction.reply('He is a legend');
-  }
-  else if (interaction.commandName === 'latestvideo') {
-    const data = await getData();
-    if (!data) {
-      await interaction.reply('No data found');
-      return;
+/**
+ * @function registerCommands
+ * @description Registers the commands to the Discord API
+ * @returns {Promise<void>}
+ * @async
+ */
+async function registerCommands() {
+    try {
+        console.log('Started refreshing application (/) commands.');
+        const body = commands.map(command => command.details());
+        const rest = new REST({ version: '10' }).setToken(DISCORD_TOKEN);
+        await rest.put(Routes.applicationCommands(DISCORD_CLIENT_ID), { body });
+        console.log('Successfully reloaded application (/) commands.');
+    } catch (error) {
+        console.error(error);
     }
-    await interaction.reply(
-        `Title: ${data.title}\n\nPublished At: ${data.publishedAt}\nLink: ${data.link}`
-    );
-  }
-});
+}
 
-client.login(DISCORD_TOKEN);
+/**
+ * @function login
+ * @description Logs in the bot to Discord
+ * @returns {Promise<void>}
+ * @async
+ */
+async function login() {
+    const client = new Client({ intents: [ GatewayIntentBits.Guilds ] });
+
+    client.on('ready', () => console.log(`Logged in as ${client.user.tag}!`));
+    client.on('interactionCreate', async interaction => {
+        if (!interaction.isChatInputCommand()) return;
+
+        await commands
+            .find(command => command.name === interaction.commandName)
+            ?.execute(interaction);
+    });
+
+    client.login(DISCORD_TOKEN);
+}
+
+export async function init() {
+    await registerCommands();
+    await login();
+}
