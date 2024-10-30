@@ -1,16 +1,9 @@
 import { Client, GatewayIntentBits, REST, Routes } from 'discord.js';
-
-import WhoIs from './commands/whois.js';
-import LatestYouTubeVideo from './commands/latestYouTubeVideo.js';
+import { commands } from './commands/_index.js';
 
 const { DISCORD_TOKEN, DISCORD_CLIENT_ID } = process.env;
 if (!DISCORD_TOKEN) console.error('Missing TOKEN in .env');
 if (!DISCORD_CLIENT_ID) console.error('Missing CLIENT_ID in .env');
-
-const commands = [
-    new WhoIs(),
-    new LatestYouTubeVideo()
-];
 
 /**
  * @function registerCommands
