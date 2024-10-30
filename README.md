@@ -28,11 +28,12 @@ npm start
 The bot uses a command pattern to implement commands. The base class is located at [src/commands/command.js](src/commands/_command.js).
 
 #### Creating a new Command
-1. Create a new command file
+
+1. **Create a new command file**
 
 Create a new file in the [src/commands](src/commands) directory and extend the base class. The file name should be the command name in camelCase, for example `whoIs.js`.
 
-2. Implement the class constructor
+2. **Implement the class constructor**
 
 The base class constructor expects the following parameters:
 - `name` - The command name entered by the user on Discord, for example `/whois`.
@@ -51,7 +52,7 @@ export default class WhoIs extends Command {
 }
 ```
 
-3. Implement the `execute` method
+3. **Implement the `execute` method**
 
 The `execute` method is called when the command is executed by the user. This method is called with a single parameter called `interaction` which is an instance of the `Interaction` class from the Discord.js library. The `interaction` object contains a method called `reply` which can be used to send a message back to the user.
 
@@ -72,7 +73,7 @@ export default class WhoIs extends Command {
 }
 ```
 
-4. Register the command
+4. **Register the command**
 
 To register the command, you must import the command class and add it to the `commands` array in the [src/commands/_index.js](src/commands/_index.js) file. The command will be automatically registered with the bot when it starts.
 
@@ -89,7 +90,7 @@ export const commands = [
 ];
 ```
 
-5. Test the command
+5. **Test the command**
 
 You can now test the command by running the bot and entering the command on Discord.
 Note: You may need to restart the bot if it is already running to register the new command.
