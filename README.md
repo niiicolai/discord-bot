@@ -29,7 +29,7 @@ The bot uses a command pattern to implement commands. The base class is located 
 
 #### Creating a new Command
 1. Create a new command file
-To create a new command, create a new file in the [src/commands](src/commands) directory and extend the base class. The file name should be the command name in camelCase, for example `whoIs.js`.
+Create a new file in the [src/commands](src/commands) directory and extend the base class. The file name should be the command name in camelCase, for example `whoIs.js`.
 
 2. Implement the class constructor
 The base class constructor expects the following parameters:
