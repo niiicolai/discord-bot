@@ -6,6 +6,9 @@ if (!API_KEY) console.error('Missing YOUTUBE_API_KEY in .env');
 const PLAYLIST_ID = process.env.YOUTUBE_PLAYLIST_ID;
 if (!PLAYLIST_ID) console.error('Missing YOUTUBE_PLAYLIST_ID in .env');
 
+const YOUTUBE_CHANNEL_NAME = process.env.YOUTUBE_CHANNEL_NAME;
+if (!YOUTUBE_CHANNEL_NAME) console.error('Missing YOUTUBE_CHANNEL_NAME in .env');
+
 /**
  * @function getLatestVideo
  * @description Fetches the latest video from the YouTube playlist
@@ -42,7 +45,7 @@ export default class LatestYouTubeVideo extends Command {
     constructor() {
         super(
             'latestvideo', 
-            'Get the latest YouTube video from Not So Serious Gaming'
+            `Get the latest YouTube video from ${YOUTUBE_CHANNEL_NAME}`
         );
     }
     

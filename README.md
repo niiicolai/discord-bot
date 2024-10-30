@@ -1,4 +1,4 @@
-# NSSG Bot
+# Discord Bot
 
 ## Requirements
 Before you can use this bot, you will need to create a project on the following platforms and obtain the necessary credentials.
