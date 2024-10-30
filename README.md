@@ -25,7 +25,7 @@ npm start
 ## Documentation
 
 ### Commands
-The bot uses a command pattern to implement commands. The base class is located at [src/commands/command.js](src/commands/_command.js).
+The bot uses a command pattern to implement commands. The base class is located at [src/commands/_command.js](src/commands/_command.js).
 
 #### Creating a new Command
 
