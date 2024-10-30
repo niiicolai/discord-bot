@@ -62,6 +62,7 @@ See the example below:
 const name = 'whois';
 const description = 'Display user information';
 const replyText = 'You are a Discord user!';
+
 export default class WhoIs extends Command {
   constructor() {
     super(name, description);
