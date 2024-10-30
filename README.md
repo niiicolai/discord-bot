@@ -28,53 +28,64 @@ npm start
 The bot uses a command pattern to implement commands. The base class is located at [src/commands/_command.js](src/commands/_command.js).
 
 #### Creating a new Command
+The following steps will guide you to make a simple command that displays the current time.
 
 1. **Create a new command file**
 
-Create a new file in the [src/commands](src/commands) directory and extend the base class. The file name should be the command name in camelCase, for example `whoIs.js`.
+Create a new file in the [src/commands](src/commands) directory and extend the base class. The file name should be the command name in camelCase, for example `time.js`.
 
-2. **Implement the class constructor**
+2. **Create a new class that extends the base class**
+
+The class should be named the same as the file name but in PascalCase. For example, the class name should be `Time` for the file `time.js`.
+Also, the class should be exported as default and extend the base class.
+See the example below:
+```javascript
+export default class Time extends Command {
+}
+```
+
+3. **Implement the class constructor**
 
 The base class constructor expects the following parameters:
-- `name` - The command name entered by the user on Discord, for example `/whois`.
+- `name` - The command name entered by the user on Discord, for example `/time`.
 - `description` - The command description that will be displayed on Discord when entering the command.
 
 You must, therefore, inject these parameters into the super constructor.
 See the example below:
 ```javascript
-const name = 'whois';
-const description = 'Display user information';
-
-export default class WhoIs extends Command {
+export default class Time extends Command {
   constructor() {
-    super(name, description);
+    super(
+        'time', // The command name 
+        'Display the current time' // The command description
+    );
   }
 }
 ```
 
-3. **Implement the `execute` method**
+4. **Implement the `execute` method**
 
 The `execute` method is called when the command is executed by the user. This method is called with a single parameter called `interaction` which is an instance of the `Interaction` class from the Discord.js library. The `interaction` object contains a method called `reply` which can be used to send a message back to the user.
 
 You must, therefore, implement the `execute` method in your command class with logic to handle the reply to the user. 
 See the example below:
 ```javascript
-const name = 'whois';
-const description = 'Display user information';
-const replyText = 'You are a Discord user!';
-
-export default class WhoIs extends Command {
+export default class Time extends Command {
   constructor() {
-    super(name, description);
+    super('time', 'Display the current time');
   }
 
   async execute(interaction) {
-    await interaction.reply(replyText);
+    // Create a string with a message containing the current time
+    const text = `The current time is: ${new Date().toLocaleTimeString()}`;
+
+    // Send the message back to the user on Discord who executed the command (/time)
+    await interaction.reply(text);
   }
 }
 ```
 
-4. **Test the command**
+5. **Test the command**
 
 You can now test the command by running the bot and entering the command on Discord.
 Note: You may need to restart the bot if it is already running to register the new command.
