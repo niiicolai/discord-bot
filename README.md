@@ -32,7 +32,7 @@ The following steps will guide you to make a simple command that displays the cu
 
 1. **Create a new command file**
 
-Create a new file in the [src/commands](src/commands) directory and extend the base class. The file name should be the command name in camelCase, for example `time.js`.
+Create a new file in the [src/commands](src/commands) directory. The file name should be the command name in camelCase, for example `time.js`.
 
 2. **Create a new class that extends the base class**
 
